@@ -97,8 +97,8 @@ def create_auth_blueprint(db_manager):
                     'token', 
                     token, 
                     httponly=True, 
-                    secure=False,  # Set to True in production with HTTPS
-                    samesite='Lax',
+                    secure=True,  # Set to True in production with HTTPS
+                    samesite='None',
                     max_age=24*60*60  # 24 hours
                 )
                 
