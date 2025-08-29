@@ -161,7 +161,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/logout", {
+      const response = await fetch("https://diapredict-sxlr.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -464,7 +464,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/history", { credentials: "include" })
+    fetch("https://diapredict-sxlr.onrender.com/api/history", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         setHistory(data);

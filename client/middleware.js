@@ -14,7 +14,7 @@ export async function middleware(request) {
     // If has token and trying to access login/register, redirect to dashboard
     if (token && (pathname === '/' || pathname === '/login' || pathname === '/register')) {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/verify', {
+        const response = await fetch('https://diapredict-sxlr.onrender.com/api/auth/verify', {
           headers: { 'Cookie': `token=${token}` }
         });
         
@@ -37,7 +37,7 @@ export async function middleware(request) {
   
   // Verify token with backend
   try {
-    const response = await fetch('http://localhost:5000/api/auth/verify', {
+    const response = await fetch('https://diapredict-sxlr.onrender.com/api/auth/verify', {
       headers: { 'Cookie': `token=${token}` }
     });
     

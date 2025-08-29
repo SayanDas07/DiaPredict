@@ -164,7 +164,7 @@ const Navbar = () => {
   const router = useRouter();
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/logout", {
+      const response = await fetch("https://diapredict-sxlr.onrender.com/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -446,7 +446,7 @@ export default function ProfilePage() {
     async function fetchData() {
       try {
         // Fetch profile
-        const profileRes = await fetch("http://localhost:5000/api/profile", { 
+        const profileRes = await fetch("https://diapredict-sxlr.onrender.com/api/profile", { 
           credentials: "include" 
         });
         if (profileRes.ok) {
@@ -455,7 +455,7 @@ export default function ProfilePage() {
         }
 
         // Fetch history for insights
-        const historyRes = await fetch("http://localhost:5000/api/history", { 
+        const historyRes = await fetch("https://diapredict-sxlr.onrender.com/api/history", { 
           credentials: "include" 
         });
         if (historyRes.ok) {
