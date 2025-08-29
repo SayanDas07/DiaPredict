@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Eye, EyeOff, Lock, User, ArrowLeft, AlertCircle, CheckCircle, Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 
 const AnimatedBackground = () => {
@@ -69,6 +70,7 @@ export default function LoginPage() {
   const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const router = useRouter();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -99,8 +101,7 @@ export default function LoginPage() {
       if (response.ok) {
         setSuccess('Login successful! Redirecting...');
         setTimeout(() => {
-    
-          window.location.href = '/dashboard';
+          router.push('/dashboard');
         }, 1500);
       } else {
         setError(data.error || 'Login failed. Please check your credentials.');
@@ -147,7 +148,7 @@ export default function LoginPage() {
         animate={{ opacity: 1, x: 0 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => window.location.href = '/'}
+        onClick={() => router.push('/')}
         className="absolute top-6 left-6 z-20 flex items-center space-x-2 text-white/80 hover:text-white bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 transition-all duration-300"
       >
         <ArrowLeft className="w-4 h-4" />
@@ -294,7 +295,7 @@ export default function LoginPage() {
             <p className="text-white/70 text-sm">
               Do not have an account?{' '}
               <button
-                onClick={() => window.location.href = '/register'}
+                onClick={() => router.push('/register')}
                 className="text-blue-400 hover:text-blue-300 font-semibold transition-colors bg-none border-none cursor-pointer"
               >
                 Create one here

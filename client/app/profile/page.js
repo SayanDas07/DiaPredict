@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Activity, TrendingUp, Calendar, AlertCircle, User, History, BarChart3, Heart, ChevronRight, Zap, Sparkles, Shield, Clock, LogOut, Menu, X, Home, Mail, UserCheck, Settings, Edit3, Save, RefreshCw, PieChart, LineChart, Target, Gauge, ArrowUp, ArrowDown, CheckCircle, XCircle, Brain, Lightbulb, Eye, TrendingDown } from "lucide-react";
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart as RechartsPieChart, Cell, BarChart as RechartsBarChart, Bar, Area, AreaChart, RadialBarChart, RadialBar, Pie } from 'recharts';
+import { useRouter } from "next/navigation";
 
 const AnimatedBackground = () => {
   const [particles, setParticles] = useState([]);
@@ -68,6 +69,7 @@ const Navbar = () => {
     { name: "Profile", href: "/profile", icon: User, active: true },
   ];
 
+  const router = useRouter();
   const handleLogout = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/auth/logout", {
@@ -76,7 +78,7 @@ const Navbar = () => {
       });
 
       if (response.ok) {
-        window.location.href = "/";
+        router.push("/");
       } else {
         console.error("Logout failed");
       }

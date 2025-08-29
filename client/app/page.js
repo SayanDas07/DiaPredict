@@ -2,17 +2,18 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Brain, MapPin, Shield, Clock, TrendingUp, ChevronRight, Sparkles, X, Menu } from 'lucide-react';
-
+import { useRouter } from "next/navigation";
 import Footer from '../components/footer';
 
 const Navbar = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleNavigation = (path) => {
-    window.location.href = path;
+    router.push(path);
   };
 
   return (
@@ -307,8 +308,10 @@ export default function LandingPage() {
     }
   ];
 
+  const router = useRouter();
+
   const handleNavigation = (path) => {
-    window.location.href = path;
+    router.push(path);
   };
 
   return (

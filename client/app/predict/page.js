@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Activity, TrendingUp, Calendar, AlertCircle, User, History, BarChart3, Heart, ChevronRight, Zap, Sparkles, Shield, Clock, LogOut, Menu, X, Home, CheckCircle, XCircle, MapPin, Stethoscope, Brain, Lightbulb, ArrowRight, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const AnimatedBackground = () => {
   const [particles, setParticles] = useState([]);
@@ -99,6 +100,7 @@ const Navbar = () => {
     { name: "Records", href: "/history", icon: History },
     { name: "Profile", href: "/profile", icon: User },
   ];
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
@@ -108,7 +110,7 @@ const Navbar = () => {
       });
 
       if (response.ok) {
-        window.location.href = "/";
+        router.push("/");
       } else {
         console.error("Logout failed");
       }

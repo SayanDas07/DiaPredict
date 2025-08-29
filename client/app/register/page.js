@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, Eye, EyeOff, Lock, User, Mail, ArrowLeft, AlertCircle, CheckCircle, Loader, Shield } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 
 const AnimatedBackground = () => {
@@ -78,6 +79,8 @@ export default function RegisterPage() {
     usernameValid: true,
     passwordValid: true,
   });
+
+  const router = useRouter();
 
   // Validation functions
   const validateEmail = (email) => {
@@ -158,7 +161,7 @@ export default function RegisterPage() {
     setMessageType('');
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch("https://diapredict-sxlr.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -170,7 +173,7 @@ export default function RegisterPage() {
       if (res.ok) {
         setMessage("Registration successful! Redirecting to login...");
         setMessageType('success');
-        setTimeout(() => (window.location.href = "/login"), 2000);
+        setTimeout(() => (router.push("/login")), 2000);
       } else {
         setMessage(data.error || "Registration failed. Please try again.");
         setMessageType('error');
@@ -233,7 +236,7 @@ export default function RegisterPage() {
         animate={{ opacity: 1, x: 0 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => window.location.href = '/'}
+        onClick={() => router.push('/')}
         className="absolute top-6 left-6 z-20 flex items-center space-x-2 text-white/80 hover:text-white bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 transition-all duration-300"
       >
         <ArrowLeft className="w-4 h-4" />
@@ -498,7 +501,7 @@ export default function RegisterPage() {
             <p className="text-white/70 text-sm">
               Already have an account?{' '}
               <button 
-                onClick={() => window.location.href = '/login'}
+                onClick={() => router.push('/login')}
                 className="text-purple-400 hover:text-purple-300 font-semibold transition-colors bg-none border-none cursor-pointer"
               >
                 Sign in here

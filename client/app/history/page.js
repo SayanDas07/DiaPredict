@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Activity, TrendingUp, Calendar, AlertCircle, User, History, BarChart3, Heart, ChevronRight, Zap, Sparkles, Shield, Clock, LogOut, Menu, X, Home, CheckCircle, XCircle, MapPin, Stethoscope, Brain, Lightbulb, ArrowRight, Loader2, Eye, ChevronDown, ChevronUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 const AnimatedBackground = () => {
@@ -92,6 +93,7 @@ const FloatingIcons = () => {
 };
 
 const Navbar = () => {
+  const router = useRouter();
   const navItems = [
     { name: "Dashboard", href: "/dashboard", icon: Home },
     { name: "New Prediction", href: "/predict", icon: BarChart3 },
@@ -107,7 +109,7 @@ const Navbar = () => {
       });
 
       if (response.ok) {
-        window.location.href = "/";
+        router.push("/");
       } else {
         console.error("Logout failed");
       }
