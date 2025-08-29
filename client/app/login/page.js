@@ -8,37 +8,68 @@ import { useRouter } from 'next/navigation';
 
 const AnimatedBackground = () => {
   const [particles, setParticles] = useState([]);
+  const [dimensions, setDimensions] = useState({ width: 1000, height: 1000 });
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    // Set initial dimensions
+    updateDimensions();
+
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  useEffect(() => {
+    // Only create particles on client side
+    if (typeof window === 'undefined') return;
+
     const newParticles = Array.from({ length: 30 }, (_, i) => ({
       id: i,
-      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 800),
-      y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 600),
-      size: Math.random() * 3 + 1,
+      x: Math.random() * dimensions.width,
+      y: Math.random() * dimensions.height,
+      size: Math.random() * 4 + 2,
       speedX: (Math.random() - 0.5) * 1,
       speedY: (Math.random() - 0.5) * 1,
     }));
     setParticles(newParticles);
-  }, []);
+  }, [dimensions]);
 
   useEffect(() => {
+    if (particles.length === 0) return;
+
     const interval = setInterval(() => {
       setParticles(prev => prev.map(particle => ({
         ...particle,
-        x: (particle.x + particle.speedX + (typeof window !== 'undefined' ? window.innerWidth : 800)) % (typeof window !== 'undefined' ? window.innerWidth : 800),
-        y: (particle.y + particle.speedY + (typeof window !== 'undefined' ? window.innerHeight : 600)) % (typeof window !== 'undefined' ? window.innerHeight : 600),
+        x: (particle.x + particle.speedX + dimensions.width) % dimensions.width,
+        y: (particle.y + particle.speedY + dimensions.height) % dimensions.height,
       })));
-    }, 50);
+    }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [particles.length, dimensions]);
+
+  // Don't render anything on server side
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
       {particles.map(particle => (
         <motion.div
           key={particle.id}
-          className="absolute bg-blue-300 rounded-full opacity-10"
+          className="absolute bg-blue-200 rounded-full opacity-10"
           style={{
             left: particle.x,
             top: particle.y,
@@ -46,19 +77,21 @@ const AnimatedBackground = () => {
             height: particle.size,
           }}
           animate={{
-            scale: [1, 1.5, 1],
+            scale: [1, 1.2, 1],
             opacity: [0.1, 0.3, 0.1],
           }}
           transition={{
             duration: 4,
             repeat: Infinity,
-            delay: particle.id * 0.2,
+            delay: particle.id * 0.1,
           }}
         />
       ))}
     </div>
   );
 };
+
+
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({

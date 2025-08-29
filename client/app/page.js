@@ -164,37 +164,68 @@ const Navbar = () => {
 
 const AnimatedBackground = () => {
   const [particles, setParticles] = useState([]);
+  const [dimensions, setDimensions] = useState({ width: 1000, height: 1000 });
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 50 }, (_, i) => ({
-      id: i,
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 4 + 2,
-      speedX: (Math.random() - 0.5) * 2,
-      speedY: (Math.random() - 0.5) * 2,
-    }));
-    setParticles(newParticles);
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    // Set initial dimensions
+    updateDimensions();
+
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+
+    return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
   useEffect(() => {
+    // Only create particles on client side
+    if (typeof window === 'undefined') return;
+
+    const newParticles = Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      x: Math.random() * dimensions.width,
+      y: Math.random() * dimensions.height,
+      size: Math.random() * 4 + 2,
+      speedX: (Math.random() - 0.5) * 1,
+      speedY: (Math.random() - 0.5) * 1,
+    }));
+    setParticles(newParticles);
+  }, [dimensions]);
+
+  useEffect(() => {
+    if (particles.length === 0) return;
+
     const interval = setInterval(() => {
       setParticles(prev => prev.map(particle => ({
         ...particle,
-        x: (particle.x + particle.speedX + window.innerWidth) % window.innerWidth,
-        y: (particle.y + particle.speedY + window.innerHeight) % window.innerHeight,
+        x: (particle.x + particle.speedX + dimensions.width) % dimensions.width,
+        y: (particle.y + particle.speedY + dimensions.height) % dimensions.height,
       })));
-    }, 50);
+    }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [particles.length, dimensions]);
+
+  // Don't render anything on server side
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
       {particles.map(particle => (
         <motion.div
           key={particle.id}
-          className="absolute bg-blue-200 rounded-full opacity-20"
+          className="absolute bg-blue-200 rounded-full opacity-10"
           style={{
             left: particle.x,
             top: particle.y,
@@ -203,10 +234,10 @@ const AnimatedBackground = () => {
           }}
           animate={{
             scale: [1, 1.2, 1],
-            opacity: [0.2, 0.4, 0.2],
+            opacity: [0.1, 0.3, 0.1],
           }}
           transition={{
-            duration: 3,
+            duration: 4,
             repeat: Infinity,
             delay: particle.id * 0.1,
           }}
@@ -216,19 +247,44 @@ const AnimatedBackground = () => {
   );
 };
 
-
 const FloatingIcons = () => {
-  const icons = [Activity, Brain, Shield, TrendingUp];
+  const icons = [Activity, Heart, Shield, TrendingUp];
+  const [dimensions, setDimensions] = useState({ width: 1000, height: 1000 });
+
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    // Set initial dimensions
+    updateDimensions();
+
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  // Don't render anything on server side
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
       {icons.map((Icon, index) => (
         <motion.div
           key={index}
-          className="absolute text-blue-100 opacity-10"
+          className="absolute text-blue-100 opacity-5"
           initial={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
             rotate: 0
           }}
           animate={{
@@ -237,17 +293,18 @@ const FloatingIcons = () => {
             scale: [1, 1.1, 1],
           }}
           transition={{
-            duration: 6 + index,
+            duration: 8 + index,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         >
-          <Icon size={40 + index * 10} />
+          <Icon size={30 + index * 8} />
         </motion.div>
       ))}
     </div>
   );
 };
+
 
 export default function LandingPage() {
   const containerVariants = {

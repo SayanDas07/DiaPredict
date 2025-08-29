@@ -5,33 +5,63 @@ import { motion } from "framer-motion";
 import { Activity, TrendingUp, Calendar, AlertCircle, User, History, BarChart3, Heart, ChevronRight, Zap, Sparkles, Shield, Clock, LogOut, Menu, X, Home } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-
 const AnimatedBackground = () => {
   const [particles, setParticles] = useState([]);
+  const [dimensions, setDimensions] = useState({ width: 1000, height: 1000 });
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    // Set initial dimensions
+    updateDimensions();
+
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  useEffect(() => {
+    // Only create particles on client side
+    if (typeof window === 'undefined') return;
+
     const newParticles = Array.from({ length: 30 }, (_, i) => ({
       id: i,
-      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-      y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
+      x: Math.random() * dimensions.width,
+      y: Math.random() * dimensions.height,
       size: Math.random() * 4 + 2,
       speedX: (Math.random() - 0.5) * 1,
       speedY: (Math.random() - 0.5) * 1,
     }));
     setParticles(newParticles);
-  }, []);
+  }, [dimensions]);
 
   useEffect(() => {
+    if (particles.length === 0) return;
+
     const interval = setInterval(() => {
       setParticles(prev => prev.map(particle => ({
         ...particle,
-        x: (particle.x + particle.speedX + (typeof window !== 'undefined' ? window.innerWidth : 1000)) % (typeof window !== 'undefined' ? window.innerWidth : 1000),
-        y: (particle.y + particle.speedY + (typeof window !== 'undefined' ? window.innerHeight : 1000)) % (typeof window !== 'undefined' ? window.innerHeight : 1000),
+        x: (particle.x + particle.speedX + dimensions.width) % dimensions.width,
+        y: (particle.y + particle.speedY + dimensions.height) % dimensions.height,
       })));
     }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [particles.length, dimensions]);
+
+  // Don't render anything on server side
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -55,6 +85,64 @@ const AnimatedBackground = () => {
             delay: particle.id * 0.1,
           }}
         />
+      ))}
+    </div>
+  );
+};
+
+const FloatingIcons = () => {
+  const icons = [Activity, Heart, Shield, TrendingUp];
+  const [dimensions, setDimensions] = useState({ width: 1000, height: 1000 });
+
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    // Set initial dimensions
+    updateDimensions();
+
+    // Add resize listener
+    window.addEventListener('resize', updateDimensions);
+
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  // Don't render anything on server side
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {icons.map((Icon, index) => (
+        <motion.div
+          key={index}
+          className="absolute text-blue-100 opacity-5"
+          initial={{
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
+            rotate: 0
+          }}
+          animate={{
+            y: [null, -20, 0],
+            rotate: [0, 10, -10, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 8 + index,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <Icon size={30 + index * 8} />
+        </motion.div>
       ))}
     </div>
   );
@@ -205,37 +293,7 @@ const Navbar = () => {
   );
 };
 
-const FloatingIcons = () => {
-  const icons = [Activity, Heart, Shield, TrendingUp];
 
-  return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {icons.map((Icon, index) => (
-        <motion.div
-          key={index}
-          className="absolute text-blue-100 opacity-5"
-          initial={{
-            x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-            y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
-            rotate: 0
-          }}
-          animate={{
-            y: [null, -20, 0],
-            rotate: [0, 10, -10, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 8 + index,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <Icon size={30 + index * 8} />
-        </motion.div>
-      ))}
-    </div>
-  );
-};
 
 export default function DashboardPage() {
   const [data, setData] = useState(null);
