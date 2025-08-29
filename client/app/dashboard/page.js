@@ -91,7 +91,6 @@ const AnimatedBackground = () => {
 };
 
 const FloatingIcons = () => {
-  const icons = [Activity, Heart, Shield, TrendingUp];
   const [dimensions, setDimensions] = useState({ width: 1000, height: 1000 });
 
   useEffect(() => {
@@ -118,6 +117,9 @@ const FloatingIcons = () => {
   if (typeof window === 'undefined') {
     return null;
   }
+
+  // Define icons only on client side
+  const icons = [Activity, Heart, Shield, TrendingUp];
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
