@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Brain, MapPin, Shield, Clock, TrendingUp, ChevronRight, Sparkles, X, Menu } from 'lucide-react';
+import { Activity, Brain, MapPin, Shield, Clock, TrendingUp, ChevronRight, Sparkles, X, Menu, Heart } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import Footer from '../components/footer';
 
