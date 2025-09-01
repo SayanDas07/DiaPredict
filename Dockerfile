@@ -6,21 +6,30 @@ COPY client/ ./
 RUN npm run build
 
 
-FROM python:3.10-slim
+FROM node:18-alpine
 WORKDIR /app
 
-# Install Python dependencies
+# Install Python
+RUN apk add --no-cache python3 py3-pip
+
+# Copy and install Python dependencies
 COPY server/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Copy server code
 COPY server/ ./
 
-# Copy built Next.js app from previous stage
-COPY --from=client-builder /app/client/out ./static
+# Copy built Next.js app
+COPY --from=client-builder /app/client/.next/standalone ./nextjs
+COPY --from=client-builder /app/client/.next/static ./nextjs/.next/static
+COPY --from=client-builder /app/client/public ./nextjs/public
 
-# Expose port
-EXPOSE 5000
+# Create startup script
+RUN echo '#!/bin/sh\n\
+cd /app/nextjs && node server.js &\n\
+cd /app && python3 app.py &\n\
+wait' > /app/start.sh && chmod +x /app/start.sh
 
-# Run Flask server
-CMD ["python", "app.py"]
+EXPOSE 3000 5000
+
+CMD ["/app/start.sh"]
