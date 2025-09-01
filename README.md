@@ -145,6 +145,8 @@ If your prediction shows higher diabetes risk, you'll see two powerful features:
    - View account settings
    - Manage preferences
    - View health statistics
+     <img width="1896" height="968" alt="image" src="https://github.com/user-attachments/assets/f5f81105-d7b7-4faa-9781-ad203b1253e8" />
+
 
 2. Check **Records** page to:
    - See all past predictions
