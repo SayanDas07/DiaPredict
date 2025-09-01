@@ -120,6 +120,7 @@ copy the .env.sample variables and use your data
    - **High Risk**: ⚠️ Consider lifestyle changes and medical consultation
 
 ### Step 4: Get Personalized Support (For High Risk)
+
 If your prediction shows higher diabetes risk, you'll see two powerful features:
 
 #### 🤖 AI Suggestions
@@ -127,12 +128,17 @@ If your prediction shows higher diabetes risk, you'll see two powerful features:
 - Exercise plans tailored to your profile
 - Lifestyle modification tips
 - Prevention strategies
+  <img width="1919" height="901" alt="image" src="https://github.com/user-attachments/assets/4b8a7e3d-ccdb-454e-8aef-4eb5e44deae5" />
+
+
 
 #### 🏥 Find Nearby Doctors
 - Locate healthcare professionals in your area
 - Filter by specialty (endocrinologists, general practitioners)
 - View ratings and contact information
 - Get directions to clinics
+  <img width="1916" height="966" alt="image" src="https://github.com/user-attachments/assets/9e486e96-84fc-45c5-a8dc-ef7aa0fa1267" />
+
 
 ### Step 5: Track Your Progress
 1. Visit your **Profile** page to:
