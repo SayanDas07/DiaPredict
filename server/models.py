@@ -10,7 +10,10 @@ class User(UserMixin):
 
 class DatabaseManager:
     def __init__(self, db_path):
+        if db_path.startswith("sqlite:///"):
+            db_path = db_path.replace("sqlite:///", "")
         self.db_path = db_path
+
     
     def get_connection(self):
         conn = sqlite3.connect(self.db_path)

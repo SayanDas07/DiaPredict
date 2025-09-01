@@ -163,7 +163,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("https://diapredict-sxlr.onrender.com/api/auth/logout", {
+      const response = await fetch("http://localhost:5000/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -604,7 +604,7 @@ export default function PredictPage() {
     setShowHighRiskActions(false);
 
     try {
-      const res = await fetch("https://diapredict-sxlr.onrender.com/api/predict", {
+      const res = await fetch("http://localhost:5000/api/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -649,7 +649,7 @@ export default function PredictPage() {
     };
 
     try {
-      const res = await fetch("https://diapredict-sxlr.onrender.com/api/suggestion", {
+      const res = await fetch("http://localhost:5000/api/suggestion", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

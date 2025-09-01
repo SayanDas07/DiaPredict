@@ -16,7 +16,7 @@ def create_app(config_name='default'):
     app.config.from_object(config[config_name])
     
     # Enable CORS for Next.js frontend
-    CORS(app, origins=["https://dia-predict-xi.vercel.app"], supports_credentials=True)
+    CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
     
     # Initialize database manager
     db_manager = DatabaseManager(app.config['DATABASE'])
@@ -39,5 +39,8 @@ def create_app(config_name='default'):
     
     return app
 
+
 config_name = os.environ.get('FLASK_CONFIG', 'default')
 app = create_app(config_name) 
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000, debug=True)

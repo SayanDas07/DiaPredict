@@ -14,7 +14,7 @@ def create_auth_blueprint(db_manager):
             token = request.headers.get('Authorization')
             if token:
                 try:
-                    token = token.split(' ')[1]  # Remove 'Bearer ' prefix
+                    token = token.split(' ')[1] 
                     data = jwt.decode(token, os.environ.get('SECRET_KEY'), algorithms=['HS256'])
                     current_user = db_manager.get_user_by_id(data['user_id'])
                     if not current_user:
@@ -97,8 +97,8 @@ def create_auth_blueprint(db_manager):
                     'token', 
                     token, 
                     httponly=True, 
-                    secure=True,  # Set to True in production with HTTPS
-                    samesite='None',
+                    secure=False,  # Set to True in production with HTTPS
+                    samesite='Lax',
                     max_age=24*60*60  # 24 hours
                 )
                 

@@ -164,7 +164,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("https://diapredict-sxlr.onrender.com/logout", {
+      const response = await fetch("http://localhost:5000/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -304,7 +304,7 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchDashboard() {
       try {
-        const res = await fetch("https://diapredict-sxlr.onrender.com/api/dashboard", {
+        const res = await fetch("http://localhost:5000/api/dashboard", {
           method: "GET",
           credentials: "include",
         });
